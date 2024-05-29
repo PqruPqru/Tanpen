@@ -13,6 +13,10 @@
 		792737F82C03722600443354 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 792737F72C03722600443354 /* Base */; };
 		792737FA2C03722900443354 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 792737F92C03722900443354 /* Assets.xcassets */; };
 		792737FD2C03722900443354 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 792737FC2C03722900443354 /* Base */; };
+		792738052C06E1CB00443354 /* NovelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792738042C06E1CB00443354 /* NovelViewController.swift */; };
+		792738072C06E1FC00443354 /* Novel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792738062C06E1FC00443354 /* Novel.swift */; };
+		792738092C06E23D00443354 /* NovelStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792738082C06E23D00443354 /* NovelStorage.swift */; };
+		7927380B2C06E97400443354 /* PromptViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7927380A2C06E97400443354 /* PromptViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +28,10 @@
 		792737F92C03722900443354 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		792737FC2C03722900443354 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		792737FE2C03722900443354 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		792738042C06E1CB00443354 /* NovelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelViewController.swift; sourceTree = "<group>"; };
+		792738062C06E1FC00443354 /* Novel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Novel.swift; sourceTree = "<group>"; };
+		792738082C06E23D00443354 /* NovelStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelStorage.swift; sourceTree = "<group>"; };
+		7927380A2C06E97400443354 /* PromptViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +68,10 @@
 				792737F22C03722600443354 /* SceneDelegate.swift */,
 				792737F42C03722600443354 /* ViewController.swift */,
 				792737F62C03722600443354 /* Main.storyboard */,
+				792738062C06E1FC00443354 /* Novel.swift */,
+				792738082C06E23D00443354 /* NovelStorage.swift */,
+				792738042C06E1CB00443354 /* NovelViewController.swift */,
+				7927380A2C06E97400443354 /* PromptViewController.swift */,
 				792737F92C03722900443354 /* Assets.xcassets */,
 				792737FB2C03722900443354 /* LaunchScreen.storyboard */,
 				792737FE2C03722900443354 /* Info.plist */,
@@ -138,9 +150,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				792738092C06E23D00443354 /* NovelStorage.swift in Sources */,
 				792737F52C03722600443354 /* ViewController.swift in Sources */,
 				792737F12C03722600443354 /* AppDelegate.swift in Sources */,
 				792737F32C03722600443354 /* SceneDelegate.swift in Sources */,
+				792738052C06E1CB00443354 /* NovelViewController.swift in Sources */,
+				7927380B2C06E97400443354 /* PromptViewController.swift in Sources */,
+				792738072C06E1FC00443354 /* Novel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
