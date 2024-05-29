@@ -17,6 +17,7 @@
 		792738072C06E1FC00443354 /* Novel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792738062C06E1FC00443354 /* Novel.swift */; };
 		792738092C06E23D00443354 /* NovelStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792738082C06E23D00443354 /* NovelStorage.swift */; };
 		7927380B2C06E97400443354 /* PromptViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7927380A2C06E97400443354 /* PromptViewController.swift */; };
+		7927380D2C06F7A200443354 /* WritingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7927380C2C06F7A200443354 /* WritingViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		792738062C06E1FC00443354 /* Novel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Novel.swift; sourceTree = "<group>"; };
 		792738082C06E23D00443354 /* NovelStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelStorage.swift; sourceTree = "<group>"; };
 		7927380A2C06E97400443354 /* PromptViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptViewController.swift; sourceTree = "<group>"; };
+		7927380C2C06F7A200443354 /* WritingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritingViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +74,7 @@
 				792738082C06E23D00443354 /* NovelStorage.swift */,
 				792738042C06E1CB00443354 /* NovelViewController.swift */,
 				7927380A2C06E97400443354 /* PromptViewController.swift */,
+				7927380C2C06F7A200443354 /* WritingViewController.swift */,
 				792737F92C03722900443354 /* Assets.xcassets */,
 				792737FB2C03722900443354 /* LaunchScreen.storyboard */,
 				792737FE2C03722900443354 /* Info.plist */,
@@ -151,6 +154,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				792738092C06E23D00443354 /* NovelStorage.swift in Sources */,
+				7927380D2C06F7A200443354 /* WritingViewController.swift in Sources */,
 				792737F52C03722600443354 /* ViewController.swift in Sources */,
 				792737F12C03722600443354 /* AppDelegate.swift in Sources */,
 				792737F32C03722600443354 /* SceneDelegate.swift in Sources */,

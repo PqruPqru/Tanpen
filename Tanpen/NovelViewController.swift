@@ -9,6 +9,7 @@ import UIKit
 
 class NovelViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     private let tableView = UITableView()
+    private let startWritingButton = UIButton(type: .system)
     private var novels: [Novel] = []
 
     override func viewDidLoad() {
@@ -30,14 +31,22 @@ class NovelViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
 
     private func setupStartWritingButton() {
-        let startWritingButton = UIBarButtonItem(title: "Start Writing", style: .plain, target: self, action: #selector(showPrompt))
-        navigationItem.rightBarButtonItem = startWritingButton
+        startWritingButton.setTitle("Start Writing", for: .normal)
+        startWritingButton.addTarget(self, action: #selector(showPrompt), for: .touchUpInside)
+        startWritingButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(startWritingButton)
+
+        NSLayoutConstraint.activate([
+            startWritingButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            startWritingButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            startWritingButton.heightAnchor.constraint(equalToConstant: 50),
+            startWritingButton.widthAnchor.constraint(equalToConstant: 200)
+        ])
     }
 
     @objc private func showPrompt() {
         let promptVC = PromptViewController()
-        promptVC.modalPresentationStyle = .fullScreen
-        present(promptVC, animated: true, completion: nil)
+        navigationController?.pushViewController(promptVC, animated: true)
     }
 
     private func loadNovels() {
