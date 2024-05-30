@@ -82,4 +82,3 @@ class NovelViewController: UIViewController, UITableViewDataSource, UITableViewD
         loadNovels()
     }
 }
-

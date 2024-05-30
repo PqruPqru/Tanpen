@@ -60,7 +60,7 @@ class WritingViewController: UIViewController {
     @objc private func saveNovel() {
         guard let title = titleTextField.text, !title.isEmpty,
               let content = textView.text, !content.isEmpty else { return }
-        let novel = Novel(title: title, content: content)
+        let novel = Novel(title: title, content: content, prompt: prompt ?? "", wordCount: wordCount ?? 0, keyword: keyword ?? "")
         NovelStorage.shared.saveNovel(novel)
         navigationController?.popToRootViewController(animated: true)
     }
