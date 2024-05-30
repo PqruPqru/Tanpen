@@ -4,13 +4,11 @@
 //
 //  Created by まつはる on 2024/05/29.
 //
-
 import UIKit
 
 class WritingViewController: UIViewController {
+    private let titleTextField = UITextField()
     private let textView = UITextView()
-    private let saveButton = UIButton(type: .system)
-    private let backButton = UIButton(type: .system)
     var prompt: String?
     var wordCount: Int?
     var keyword: String?
@@ -19,9 +17,24 @@ class WritingViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
 
+        setupTitleTextField()
         setupTextView()
-        setupButtons()
-        setupConstraints()
+        setupNavigationBar()
+    }
+
+    private func setupTitleTextField() {
+        titleTextField.translatesAutoresizingMaskIntoConstraints = false
+        titleTextField.placeholder = "Enter title here"
+        titleTextField.font = UIFont.systemFont(ofSize: 24)
+        titleTextField.borderStyle = .roundedRect
+        view.addSubview(titleTextField)
+        
+        NSLayoutConstraint.activate([
+            titleTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            titleTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            titleTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            titleTextField.heightAnchor.constraint(equalToConstant: 40)
+        ])
     }
 
     private func setupTextView() {
@@ -29,43 +42,26 @@ class WritingViewController: UIViewController {
         textView.font = UIFont.systemFont(ofSize: 18)
         textView.text = prompt ?? "Start writing your story here..."
         view.addSubview(textView)
-    }
-
-    private func setupButtons() {
-        saveButton.setTitle("Save", for: .normal)
-        saveButton.addTarget(self, action: #selector(saveNovel), for: .touchUpInside)
-        saveButton.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(saveButton)
-
-        backButton.setTitle("Back to Prompt", for: .normal)
-        backButton.addTarget(self, action: #selector(backToPrompt), for: .touchUpInside)
-        backButton.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(backButton)
-    }
-
-    private func setupConstraints() {
+        
         NSLayoutConstraint.activate([
-            textView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            textView.topAnchor.constraint(equalTo: titleTextField.bottomAnchor, constant: 20),
             textView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             textView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            textView.bottomAnchor.constraint(equalTo: saveButton.topAnchor, constant: -20),
-
-            saveButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            saveButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
-
-            backButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            backButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
+            textView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
         ])
     }
 
-    @objc private func saveNovel() {
-        guard let content = textView.text, !content.isEmpty else { return }
-        let novel = Novel(title: "New Novel", content: content)
-        NovelStorage.shared.saveNovel(novel)
-        navigationController?.popToRootViewController(animated: true)
+    private func setupNavigationBar() {
+        self.title = "Write Your Novel"
+        let saveButton = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(saveNovel))
+        navigationItem.rightBarButtonItem = saveButton
     }
 
-    @objc private func backToPrompt() {
-        navigationController?.popViewController(animated: true)
+    @objc private func saveNovel() {
+        guard let title = titleTextField.text, !title.isEmpty,
+              let content = textView.text, !content.isEmpty else { return }
+        let novel = Novel(title: title, content: content)
+        NovelStorage.shared.saveNovel(novel)
+        navigationController?.popToRootViewController(animated: true)
     }
 }

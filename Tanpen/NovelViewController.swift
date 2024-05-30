@@ -64,7 +64,22 @@ class NovelViewController: UIViewController, UITableViewDataSource, UITableViewD
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         let novel = novels[indexPath.row]
         cell.textLabel?.text = novel.title
-        cell.detailTextLabel?.text = novel.content
         return cell
     }
+
+    // MARK: - UITableViewDelegate
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let novel = novels[indexPath.row]
+        let detailVC = DetailViewController()
+        detailVC.novel = novel
+        navigationController?.pushViewController(detailVC, animated: true)
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        loadNovels()
+    }
 }
+

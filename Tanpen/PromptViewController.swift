@@ -37,11 +37,11 @@ class PromptViewController: UIViewController {
         keywordLabel.textAlignment = .center
         keywordLabel.font = UIFont.systemFont(ofSize: 20)
         
-        regenerateButton.setTitle("Regenerate", for: .normal)
+        regenerateButton.setTitle("再生成", for: .normal)
         regenerateButton.setTitleColor(.systemBlue, for: .normal)
         regenerateButton.addTarget(self, action: #selector(regeneratePrompt), for: .touchUpInside)
 
-        startWritingButton.setTitle("Start Writing", for: .normal)
+        startWritingButton.setTitle("これで書く！", for: .normal)
         startWritingButton.setTitleColor(.systemBlue, for: .normal)
         startWritingButton.addTarget(self, action: #selector(startWriting), for: .touchUpInside)
 
@@ -79,8 +79,8 @@ class PromptViewController: UIViewController {
          let randomWordCount = Int.random(in: 300...1000)
         
         promptLabel.text = randomPrompt
-        wordCountLabel.text = "Word count: \(randomWordCount)"
-        keywordLabel.text = "Keyword: \(randomKeyword)"
+        wordCountLabel.text = "字数制限: \(randomWordCount)"
+        keywordLabel.text = "使うキーワード: \(randomKeyword)"
     }
 
     @objc private func regeneratePrompt() {
