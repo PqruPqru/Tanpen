@@ -26,12 +26,12 @@ class NovelStorage {
         return []
     }
 
-    func updateNovel(_ updatedNovel: Novel) {
+    func updateNovel(original: Novel, updated: Novel) {
         var novels = loadNovels()
-        if let index = novels.firstIndex(where: { $0.title == updatedNovel.title && $0.prompt == updatedNovel.prompt }) {
-            novels[index] = updatedNovel
+        if let index = novels.firstIndex(where: { $0.title == original.title && $0.prompt == original.prompt }) {
+            novels[index] = updated
         } else {
-            novels.append(updatedNovel)
+            novels.append(updated)
         }
         if let data = try? JSONEncoder().encode(novels) {
             UserDefaults.standard.set(data, forKey: key)

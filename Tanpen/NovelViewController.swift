@@ -14,12 +14,19 @@ class NovelViewController: UIViewController, UITableViewDataSource, UITableViewD
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "短編工房"
+        self.title = "Novels"
         view.backgroundColor = .white
-
+        
         setupTableView()
         setupStartWritingButton()
         loadNovels()
+        
+        // 通知を受け取る設定
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadNovels), name: NSNotification.Name("novelUpdated"), object: nil)
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("novelUpdated"), object: nil)
     }
 
     private func setupTableView() {
@@ -31,11 +38,11 @@ class NovelViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
 
     private func setupStartWritingButton() {
-        startWritingButton.setTitle("工房に入る", for: .normal)
+        startWritingButton.setTitle("Start Writing", for: .normal)
         startWritingButton.addTarget(self, action: #selector(showPrompt), for: .touchUpInside)
         startWritingButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(startWritingButton)
-
+        
         NSLayoutConstraint.activate([
             startWritingButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             startWritingButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
@@ -52,6 +59,10 @@ class NovelViewController: UIViewController, UITableViewDataSource, UITableViewD
     private func loadNovels() {
         novels = NovelStorage.shared.loadNovels()
         tableView.reloadData()
+    }
+
+    @objc private func reloadNovels() {
+        loadNovels()
     }
 
     // MARK: - UITableViewDataSource
@@ -75,10 +86,5 @@ class NovelViewController: UIViewController, UITableViewDataSource, UITableViewD
         let detailVC = DetailViewController()
         detailVC.novel = novel
         navigationController?.pushViewController(detailVC, animated: true)
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        loadNovels()
     }
 }

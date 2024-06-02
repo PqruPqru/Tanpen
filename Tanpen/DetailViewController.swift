@@ -7,18 +7,17 @@
 
 import UIKit
 
-class DetailViewController: UIViewController, UITabBarDelegate {
+class DetailViewController: UIViewController {
     var novel: Novel?
 
     private let titleLabel = UILabel()
-    private let contentLabel = UILabel()
+    private let contentTextView = UITextView()
+    private let wordCountLabel = UILabel()
+    private let keywordLabel = UILabel()
     private let shareButton = UIButton(type: .system)
     private let editButton = UIButton(type: .system)
     private let deleteButton = UIButton(type: .system)
-    private let tabBar = UITabBar()
-    private let wordCountItem = UITabBarItem(title: "字数制限", image: nil, tag: 0)
-    private let keywordItem = UITabBarItem(title: "キーワード", image: nil, tag: 1)
-    private let tabContentLabel = UILabel()
+    private let segmentedControl = UISegmentedControl(items: ["字数制限", "キーワード"])
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,88 +29,125 @@ class DetailViewController: UIViewController, UITabBarDelegate {
 
     private func setupUI() {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        contentLabel.translatesAutoresizingMaskIntoConstraints = false
+        contentTextView.translatesAutoresizingMaskIntoConstraints = false
+        wordCountLabel.translatesAutoresizingMaskIntoConstraints = false
+        keywordLabel.translatesAutoresizingMaskIntoConstraints = false
         shareButton.translatesAutoresizingMaskIntoConstraints = false
         editButton.translatesAutoresizingMaskIntoConstraints = false
         deleteButton.translatesAutoresizingMaskIntoConstraints = false
-        tabBar.translatesAutoresizingMaskIntoConstraints = false
-        tabContentLabel.translatesAutoresizingMaskIntoConstraints = false
+        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
 
         titleLabel.font = UIFont.boldSystemFont(ofSize: 24)
         titleLabel.textAlignment = .center
 
-        contentLabel.font = UIFont.systemFont(ofSize: 18)
-        contentLabel.numberOfLines = 0
-        contentLabel.textAlignment = .center
+        contentTextView.font = UIFont.systemFont(ofSize: 18)
+        contentTextView.isEditable = false
+        contentTextView.isScrollEnabled = true
+        contentTextView.layer.borderColor = UIColor.lightGray.cgColor
+        contentTextView.layer.borderWidth = 1
+        contentTextView.layer.cornerRadius = 8
+
+        wordCountLabel.font = UIFont.systemFont(ofSize: 16)
+        wordCountLabel.textAlignment = .center
+
+        keywordLabel.font = UIFont.systemFont(ofSize: 16)
+        keywordLabel.textAlignment = .center
 
         shareButton.setTitle("共有", for: .normal)
+        if let shareImage = UIImage(systemName: "square.and.arrow.up") {
+            shareButton.setImage(shareImage, for: .normal)
+            shareButton.imageView?.contentMode = .scaleAspectFit
+            shareButton.tintColor = .darkBlueColor()
+        }
+        shareButton.layer.borderColor = UIColor.darkBlueColor().cgColor
+        shareButton.layer.borderWidth = 1
+        shareButton.layer.cornerRadius = 5
+        shareButton.setTitleColor(.darkBlueColor(), for: .normal)
+        shareButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
         shareButton.addTarget(self, action: #selector(shareNovel), for: .touchUpInside)
 
         editButton.setTitle("編集", for: .normal)
+        editButton.layer.borderColor = UIColor.darkBlueColor().cgColor
+        editButton.layer.borderWidth = 1
+        editButton.layer.cornerRadius = 5
+        editButton.setTitleColor(.darkBlueColor(), for: .normal)
+        editButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
         editButton.addTarget(self, action: #selector(editNovel), for: .touchUpInside)
 
         deleteButton.setTitle("削除", for: .normal)
+        deleteButton.layer.borderColor = UIColor.darkBlueColor().cgColor
+        deleteButton.layer.borderWidth = 1
+        deleteButton.layer.cornerRadius = 5
+        deleteButton.setTitleColor(.darkBlueColor(), for: .normal)
+        deleteButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
         deleteButton.addTarget(self, action: #selector(deleteNovel), for: .touchUpInside)
 
-        tabBar.items = [wordCountItem, keywordItem]
-        tabBar.delegate = self
+        segmentedControl.selectedSegmentIndex = 0
+        segmentedControl.addTarget(self, action: #selector(segmentedControlChanged), for: .valueChanged)
 
-        tabContentLabel.font = UIFont.systemFont(ofSize: 18)
-        tabContentLabel.textAlignment = .center
-
+        view.addSubview(segmentedControl)
+        view.addSubview(wordCountLabel)
         view.addSubview(titleLabel)
-        view.addSubview(contentLabel)
-        view.addSubview(tabBar)
-        view.addSubview(tabContentLabel)
+        view.addSubview(contentTextView)
+        view.addSubview(keywordLabel)
         view.addSubview(shareButton)
         view.addSubview(editButton)
         view.addSubview(deleteButton)
 
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            segmentedControl.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            segmentedControl.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            segmentedControl.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+
+            wordCountLabel.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 20),
+            wordCountLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            wordCountLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+
+            titleLabel.topAnchor.constraint(equalTo: wordCountLabel.bottomAnchor, constant: 20),
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
 
-            contentLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
-            contentLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            contentLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            keywordLabel.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 20),
+            keywordLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            keywordLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
 
-            tabBar.topAnchor.constraint(equalTo: contentLabel.bottomAnchor, constant: 20),
-            tabBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tabBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            contentTextView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
+            contentTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            contentTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            contentTextView.bottomAnchor.constraint(equalTo: shareButton.topAnchor, constant: -20),
 
-            tabContentLabel.topAnchor.constraint(equalTo: tabBar.bottomAnchor, constant: 20),
-            tabContentLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tabContentLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            shareButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            shareButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            shareButton.heightAnchor.constraint(equalToConstant: 44), // 追加: 共有ボタンの高さを設定
 
-            shareButton.topAnchor.constraint(equalTo: tabContentLabel.bottomAnchor, constant: 20),
-            shareButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-
-            editButton.topAnchor.constraint(equalTo: shareButton.bottomAnchor, constant: 20),
             editButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            editButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            editButton.heightAnchor.constraint(equalTo: shareButton.heightAnchor), // 追加: 共有ボタンと同じ高さに設定
 
-            deleteButton.topAnchor.constraint(equalTo: editButton.bottomAnchor, constant: 20),
-            deleteButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            deleteButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
+            deleteButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            deleteButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            deleteButton.heightAnchor.constraint(equalTo: shareButton.heightAnchor) // 追加: 共有ボタンと同じ高さに設定
         ])
     }
 
     private func displayNovel() {
         titleLabel.text = novel?.title
-        contentLabel.text = novel?.content
-        tabBar.selectedItem = wordCountItem
-        updateTabContent()
+        contentTextView.text = novel?.content
+        updateSegmentedControl()
     }
 
-    private func updateTabContent() {
-        guard let selectedItem = tabBar.selectedItem else { return }
-        switch selectedItem {
-        case wordCountItem:
-            tabContentLabel.text = "字数制限: \(novel?.wordCount ?? 0)"
-        case keywordItem:
-            tabContentLabel.text = novel?.keyword
-        default:
-            break
+    @objc private func segmentedControlChanged() {
+        updateSegmentedControl()
+    }
+
+    private func updateSegmentedControl() {
+        let selectedIndex = segmentedControl.selectedSegmentIndex
+        wordCountLabel.isHidden = selectedIndex != 0
+        keywordLabel.isHidden = selectedIndex != 1
+        if selectedIndex == 0 {
+            wordCountLabel.text = "字数制限: \(novel?.wordCount ?? 0)"
+        } else {
+            keywordLabel.text = novel?.keyword
         }
     }
 
@@ -129,11 +165,11 @@ class DetailViewController: UIViewController, UITabBarDelegate {
     }
 
     @objc private func deleteNovel() {
-        let alert = UIAlertController(title: "確認", message: "この作品をどうする？", preferredStyle: .alert)
+        let alert = UIAlertController(title: "注意", message: "この作品をどうする？", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "くしゃくしゃにする", style: .destructive, handler: { _ in
             self.confirmDeleteNovel()
         }))
-        alert.addAction(UIAlertAction(title: "保管しておく", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "まだ保管する", style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)
     }
 
@@ -142,12 +178,15 @@ class DetailViewController: UIViewController, UITabBarDelegate {
         NovelStorage.shared.deleteNovel(novel)
         navigationController?.popViewController(animated: true)
     }
+}
 
-    // UITabBarDelegate
-    func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-        updateTabContent()
+// UIColor extension to define a custom dark blue color
+extension UIColor {
+    static func darkBlueColor() -> UIColor {
+        return UIColor(red: 0/255, green: 0/255, blue: 139/255, alpha: 1.0) // Dark blue color
     }
 }
+
 
 
 //guard let　は次の関数の値がnilではない場合に実行する
