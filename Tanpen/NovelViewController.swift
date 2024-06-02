@@ -14,7 +14,7 @@ class NovelViewController: UIViewController, UITableViewDataSource, UITableViewD
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Novels"
+        self.title = "短編工房"
         view.backgroundColor = .white
 
         setupTableView()
@@ -31,7 +31,7 @@ class NovelViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
 
     private func setupStartWritingButton() {
-        startWritingButton.setTitle("Start Writing", for: .normal)
+        startWritingButton.setTitle("工房に入る", for: .normal)
         startWritingButton.addTarget(self, action: #selector(showPrompt), for: .touchUpInside)
         startWritingButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(startWritingButton)

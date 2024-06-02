@@ -37,11 +37,11 @@ class PromptViewController: UIViewController {
         keywordLabel.textAlignment = .center
         keywordLabel.font = UIFont.systemFont(ofSize: 20)
         
-        regenerateButton.setTitle("再生成", for: .normal)
+        regenerateButton.setTitle("条件リセット！", for: .normal)
         regenerateButton.setTitleColor(.systemBlue, for: .normal)
         regenerateButton.addTarget(self, action: #selector(regeneratePrompt), for: .touchUpInside)
 
-        startWritingButton.setTitle("これで書く！", for: .normal)
+        startWritingButton.setTitle("書き出す！", for: .normal)
         startWritingButton.setTitleColor(.systemBlue, for: .normal)
         startWritingButton.addTarget(self, action: #selector(startWriting), for: .touchUpInside)
 

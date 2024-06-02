@@ -24,7 +24,7 @@ class WritingViewController: UIViewController {
 
     private func setupTitleTextField() {
         titleTextField.translatesAutoresizingMaskIntoConstraints = false
-        titleTextField.placeholder = "Enter title here"
+        titleTextField.placeholder = "ここにタイトルを記入しよう！"
         titleTextField.font = UIFont.systemFont(ofSize: 24)
         titleTextField.borderStyle = .roundedRect
         view.addSubview(titleTextField)
@@ -52,7 +52,7 @@ class WritingViewController: UIViewController {
     }
 
     private func setupNavigationBar() {
-        self.title = "Write Your Novel"
+        self.title = "短編工房で作業中"
         let saveButton = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(saveNovel))
         navigationItem.rightBarButtonItem = saveButton
     }

@@ -78,8 +78,8 @@ class DetailViewController: UIViewController {
     private func displayNovel() {
         titleLabel.text = novel?.title
         contentLabel.text = novel?.content
-        wordCountLabel.text = "Word Count: \(novel?.wordCount ?? 0)"
-        keywordLabel.text = "Keyword: \(novel?.keyword ?? "")"
+        wordCountLabel.text = "字数制限: \(novel?.wordCount ?? 0)"
+        keywordLabel.text = " \(novel?.keyword ?? "")"
     }
 
     @objc private func shareNovel() {
