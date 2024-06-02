@@ -8,9 +8,9 @@
 import Foundation
 
 struct Novel: Codable {
-    let title: String
-    let content: String
-    let prompt: String
-    let wordCount: Int
-    let keyword: String
+    var title: String
+    var content: String
+    var prompt: String
+    var wordCount: Int
+    var keyword: String
 }
