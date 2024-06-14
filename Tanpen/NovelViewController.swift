@@ -7,42 +7,57 @@
 
 import UIKit
 
-class NovelViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class NovelViewController: BaseViewController, UITableViewDataSource, UITableViewDelegate {
     private let tableView = UITableView()
     private let startWritingButton = UIButton(type: .system)
     private var novels: [Novel] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Novels"
+        self.title = "短編工房"
         view.backgroundColor = .white
         
         setupTableView()
         setupStartWritingButton()
         loadNovels()
-        
-        // 通知を受け取る設定
-        NotificationCenter.default.addObserver(self, selector: #selector(reloadNovels), name: NSNotification.Name("novelUpdated"), object: nil)
+
+        // 通知の設定
+        NotificationCenter.default.addObserver(self, selector: #selector(loadNovels), name: NSNotification.Name("novelUpdated"), object: nil)
     }
 
     deinit {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name("novelUpdated"), object: nil)
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        loadNovels()
+    }
+
     private func setupTableView() {
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.frame = view.bounds
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         view.addSubview(tableView)
+
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor) // ボタンとの衝突を回避
+        ])
     }
 
     private func setupStartWritingButton() {
-        startWritingButton.setTitle("Start Writing", for: .normal)
+        startWritingButton.setTitle("書き始める", for: .normal)
         startWritingButton.addTarget(self, action: #selector(showPrompt), for: .touchUpInside)
         startWritingButton.translatesAutoresizingMaskIntoConstraints = false
+        startWritingButton.backgroundColor = UIColor.systemOrange // ボタンの背景色を設定
+        startWritingButton.setTitleColor(.white, for: .normal) // ボタンの文字色を設定
+        startWritingButton.layer.cornerRadius = 10 // ボタンの角を丸める
         view.addSubview(startWritingButton)
-        
+
         NSLayoutConstraint.activate([
             startWritingButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             startWritingButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
@@ -56,13 +71,9 @@ class NovelViewController: UIViewController, UITableViewDataSource, UITableViewD
         navigationController?.pushViewController(promptVC, animated: true)
     }
 
-    private func loadNovels() {
+    @objc private func loadNovels() {
         novels = NovelStorage.shared.loadNovels()
         tableView.reloadData()
-    }
-
-    @objc private func reloadNovels() {
-        loadNovels()
     }
 
     // MARK: - UITableViewDataSource

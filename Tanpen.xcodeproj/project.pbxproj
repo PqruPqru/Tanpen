@@ -20,6 +20,9 @@
 		7927380D2C06F7A200443354 /* WritingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7927380C2C06F7A200443354 /* WritingViewController.swift */; };
 		7927380F2C08083A00443354 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7927380E2C08083900443354 /* DetailViewController.swift */; };
 		792F97C92C0C4FD70000A7EE /* EditNovelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792F97C82C0C4FD70000A7EE /* EditNovelViewController.swift */; };
+		79BD145A2C193AD200CF13B9 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79BD14592C193AD200CF13B9 /* BaseViewController.swift */; };
+		79BD145C2C19618C00CF13B9 /* UIColor+Extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79BD145B2C19618C00CF13B9 /* UIColor+Extentions.swift */; };
+		79BD145E2C19781400CF13B9 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 79BD145D2C19781400CF13B9 /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +41,9 @@
 		7927380C2C06F7A200443354 /* WritingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritingViewController.swift; sourceTree = "<group>"; };
 		7927380E2C08083900443354 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		792F97C82C0C4FD70000A7EE /* EditNovelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditNovelViewController.swift; sourceTree = "<group>"; };
+		79BD14592C193AD200CF13B9 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		79BD145B2C19618C00CF13B9 /* UIColor+Extentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extentions.swift"; sourceTree = "<group>"; };
+		79BD145D2C19781400CF13B9 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +88,9 @@
 				7927380E2C08083900443354 /* DetailViewController.swift */,
 				792F97C82C0C4FD70000A7EE /* EditNovelViewController.swift */,
 				792737F92C03722900443354 /* Assets.xcassets */,
+				79BD14592C193AD200CF13B9 /* BaseViewController.swift */,
+				79BD145B2C19618C00CF13B9 /* UIColor+Extentions.swift */,
+				79BD145D2C19781400CF13B9 /* PrivacyInfo.xcprivacy */,
 				792737FB2C03722900443354 /* LaunchScreen.storyboard */,
 				792737FE2C03722900443354 /* Info.plist */,
 			);
@@ -148,6 +157,7 @@
 			files = (
 				792737FA2C03722900443354 /* Assets.xcassets in Resources */,
 				792737FD2C03722900443354 /* Base in Resources */,
+				79BD145E2C19781400CF13B9 /* PrivacyInfo.xcprivacy in Resources */,
 				792737F82C03722600443354 /* Base in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -161,11 +171,13 @@
 			files = (
 				7927380F2C08083A00443354 /* DetailViewController.swift in Sources */,
 				792F97C92C0C4FD70000A7EE /* EditNovelViewController.swift in Sources */,
+				79BD145A2C193AD200CF13B9 /* BaseViewController.swift in Sources */,
 				792738092C06E23D00443354 /* NovelStorage.swift in Sources */,
 				7927380D2C06F7A200443354 /* WritingViewController.swift in Sources */,
 				792737F52C03722600443354 /* ViewController.swift in Sources */,
 				792737F12C03722600443354 /* AppDelegate.swift in Sources */,
 				792737F32C03722600443354 /* SceneDelegate.swift in Sources */,
+				79BD145C2C19618C00CF13B9 /* UIColor+Extentions.swift in Sources */,
 				792738052C06E1CB00443354 /* NovelViewController.swift in Sources */,
 				7927380B2C06E97400443354 /* PromptViewController.swift in Sources */,
 				792738072C06E1FC00443354 /* Novel.swift in Sources */,
@@ -320,9 +332,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = SGFUJGARJ7;
+				DEVELOPMENT_TEAM = 74JKZ84V7C;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Tanpen/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "短編工房";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -348,9 +361,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = SGFUJGARJ7;
+				DEVELOPMENT_TEAM = 74JKZ84V7C;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Tanpen/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "短編工房";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;

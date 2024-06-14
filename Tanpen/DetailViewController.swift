@@ -4,7 +4,6 @@
 //
 //  Created by まつはる on 2024/05/30.
 //
-
 import UIKit
 
 class DetailViewController: UIViewController {
@@ -14,32 +13,64 @@ class DetailViewController: UIViewController {
     private let contentTextView = UITextView()
     private let wordCountLabel = UILabel()
     private let keywordLabel = UILabel()
+    private let promptLabel = UILabel()
     private let shareButton = UIButton(type: .system)
     private let editButton = UIButton(type: .system)
     private let deleteButton = UIButton(type: .system)
-    private let segmentedControl = UISegmentedControl(items: ["字数制限", "キーワード"])
+    private let buttonStackView = UIStackView() // ボタンをまとめるためのスタックビュー
+    private let titleContainerView = UIView()
+    private let contentContainerView = UIView()
+    private let scrollView = UIScrollView()
+    private let containerView = UIView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
-
+        setupBackground()
         setupUI()
         displayNovel()
     }
 
-    private func setupUI() {
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        contentTextView.translatesAutoresizingMaskIntoConstraints = false
-        wordCountLabel.translatesAutoresizingMaskIntoConstraints = false
-        keywordLabel.translatesAutoresizingMaskIntoConstraints = false
-        shareButton.translatesAutoresizingMaskIntoConstraints = false
-        editButton.translatesAutoresizingMaskIntoConstraints = false
-        deleteButton.translatesAutoresizingMaskIntoConstraints = false
-        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
+    private func setupBackground() {
+        let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
+        backgroundImage.image = UIImage(named: "アプリ背景画像２.jpeg")
+        backgroundImage.contentMode = .scaleAspectFill
+        view.addSubview(backgroundImage)
+        view.sendSubviewToBack(backgroundImage)
+    }
 
+    private func setupUI() {
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        titleContainerView.translatesAutoresizingMaskIntoConstraints = false
+        contentContainerView.translatesAutoresizingMaskIntoConstraints = false
+        buttonStackView.translatesAutoresizingMaskIntoConstraints = false
+
+        containerView.backgroundColor = .white
+        containerView.layer.cornerRadius = 10
+        containerView.layer.shadowColor = UIColor.black.cgColor
+        containerView.layer.shadowOpacity = 0.2
+        containerView.layer.shadowOffset = CGSize(width: 0, height: 2)
+        containerView.layer.shadowRadius = 4
+
+        titleContainerView.backgroundColor = .white
+        titleContainerView.layer.cornerRadius = 10
+        titleContainerView.layer.shadowColor = UIColor.black.cgColor
+        titleContainerView.layer.shadowOpacity = 0.2
+        titleContainerView.layer.shadowOffset = CGSize(width: 0, height: 2)
+        titleContainerView.layer.shadowRadius = 4
+
+        contentContainerView.backgroundColor = .white
+        contentContainerView.layer.cornerRadius = 10
+        contentContainerView.layer.shadowColor = UIColor.black.cgColor
+        contentContainerView.layer.shadowOpacity = 0.2
+        contentContainerView.layer.shadowOffset = CGSize(width: 0, height: 2)
+        contentContainerView.layer.shadowRadius = 4
+
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.font = UIFont.boldSystemFont(ofSize: 24)
         titleLabel.textAlignment = .center
 
+        contentTextView.translatesAutoresizingMaskIntoConstraints = false
         contentTextView.font = UIFont.systemFont(ofSize: 18)
         contentTextView.isEditable = false
         contentTextView.isScrollEnabled = true
@@ -47,113 +78,118 @@ class DetailViewController: UIViewController {
         contentTextView.layer.borderWidth = 1
         contentTextView.layer.cornerRadius = 8
 
+        wordCountLabel.translatesAutoresizingMaskIntoConstraints = false
         wordCountLabel.font = UIFont.systemFont(ofSize: 16)
         wordCountLabel.textAlignment = .center
 
+        keywordLabel.translatesAutoresizingMaskIntoConstraints = false
         keywordLabel.font = UIFont.systemFont(ofSize: 16)
         keywordLabel.textAlignment = .center
 
-        shareButton.setTitle("共有", for: .normal)
-        if let shareImage = UIImage(systemName: "square.and.arrow.up") {
-            shareButton.setImage(shareImage, for: .normal)
-            shareButton.imageView?.contentMode = .scaleAspectFit
-            shareButton.tintColor = .darkBlueColor()
-        }
-        shareButton.layer.borderColor = UIColor.darkBlueColor().cgColor
-        shareButton.layer.borderWidth = 1
-        shareButton.layer.cornerRadius = 5
-        shareButton.setTitleColor(.darkBlueColor(), for: .normal)
-        shareButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
-        shareButton.addTarget(self, action: #selector(shareNovel), for: .touchUpInside)
+        promptLabel.translatesAutoresizingMaskIntoConstraints = false
+        promptLabel.font = UIFont.systemFont(ofSize: 16)
+        promptLabel.textAlignment = .center
 
-        editButton.setTitle("編集", for: .normal)
-        editButton.layer.borderColor = UIColor.darkBlueColor().cgColor
-        editButton.layer.borderWidth = 1
-        editButton.layer.cornerRadius = 5
-        editButton.setTitleColor(.darkBlueColor(), for: .normal)
-        editButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
-        editButton.addTarget(self, action: #selector(editNovel), for: .touchUpInside)
+        setupButton(shareButton, title: "共有", action: #selector(shareNovel), imageName: "square.and.arrow.up")
+        setupButton(editButton, title: "編集", action: #selector(editNovel))
+        setupButton(deleteButton, title: "削除", action: #selector(deleteNovel))
 
-        deleteButton.setTitle("削除", for: .normal)
-        deleteButton.layer.borderColor = UIColor.darkBlueColor().cgColor
-        deleteButton.layer.borderWidth = 1
-        deleteButton.layer.cornerRadius = 5
-        deleteButton.setTitleColor(.darkBlueColor(), for: .normal)
-        deleteButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
-        deleteButton.addTarget(self, action: #selector(deleteNovel), for: .touchUpInside)
+        buttonStackView.axis = .horizontal
+        buttonStackView.distribution = .fillEqually
+        buttonStackView.spacing = 10
+        buttonStackView.addArrangedSubview(shareButton)
+        buttonStackView.addArrangedSubview(editButton)
+        buttonStackView.addArrangedSubview(deleteButton)
 
-        segmentedControl.selectedSegmentIndex = 0
-        segmentedControl.addTarget(self, action: #selector(segmentedControlChanged), for: .valueChanged)
-
-        view.addSubview(segmentedControl)
-        view.addSubview(wordCountLabel)
-        view.addSubview(titleLabel)
-        view.addSubview(contentTextView)
-        view.addSubview(keywordLabel)
-        view.addSubview(shareButton)
-        view.addSubview(editButton)
-        view.addSubview(deleteButton)
+        view.addSubview(scrollView)
+        scrollView.addSubview(containerView)
+        containerView.addSubview(titleContainerView)
+        containerView.addSubview(contentContainerView)
+        containerView.addSubview(buttonStackView)
+        titleContainerView.addSubview(titleLabel)
+        contentContainerView.addSubview(contentTextView)
+        containerView.addSubview(wordCountLabel)
+        containerView.addSubview(keywordLabel)
+        containerView.addSubview(promptLabel)
 
         NSLayoutConstraint.activate([
-            segmentedControl.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
-            segmentedControl.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            segmentedControl.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
 
-            wordCountLabel.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 20),
-            wordCountLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            wordCountLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            containerView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            containerView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            containerView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            containerView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
 
-            titleLabel.topAnchor.constraint(equalTo: wordCountLabel.bottomAnchor, constant: 20),
-            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            titleContainerView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 20),
+            titleContainerView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
+            titleContainerView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
 
-            keywordLabel.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 20),
-            keywordLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            keywordLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            titleLabel.topAnchor.constraint(equalTo: titleContainerView.topAnchor, constant: 10),
+            titleLabel.leadingAnchor.constraint(equalTo: titleContainerView.leadingAnchor, constant: 10),
+            titleLabel.trailingAnchor.constraint(equalTo: titleContainerView.trailingAnchor, constant: -10),
+            titleLabel.bottomAnchor.constraint(equalTo: titleContainerView.bottomAnchor, constant: -10),
 
-            contentTextView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
-            contentTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            contentTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            contentTextView.bottomAnchor.constraint(equalTo: shareButton.topAnchor, constant: -20),
+            contentContainerView.topAnchor.constraint(equalTo: titleContainerView.bottomAnchor, constant: 20),
+            contentContainerView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
+            contentContainerView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
 
-            shareButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            shareButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
-            shareButton.heightAnchor.constraint(equalToConstant: 44), // 追加: 共有ボタンの高さを設定
+            contentTextView.topAnchor.constraint(equalTo: contentContainerView.topAnchor, constant: 10),
+            contentTextView.leadingAnchor.constraint(equalTo: contentContainerView.leadingAnchor, constant: 10),
+            contentTextView.trailingAnchor.constraint(equalTo: contentContainerView.trailingAnchor, constant: -10),
+            contentTextView.bottomAnchor.constraint(equalTo: contentContainerView.bottomAnchor, constant: -10),
+            contentTextView.heightAnchor.constraint(equalToConstant: 200),
 
-            editButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            editButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
-            editButton.heightAnchor.constraint(equalTo: shareButton.heightAnchor), // 追加: 共有ボタンと同じ高さに設定
+            wordCountLabel.topAnchor.constraint(equalTo: contentContainerView.bottomAnchor, constant: 20),
+            wordCountLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
+            wordCountLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
 
-            deleteButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            deleteButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
-            deleteButton.heightAnchor.constraint(equalTo: shareButton.heightAnchor) // 追加: 共有ボタンと同じ高さに設定
+            keywordLabel.topAnchor.constraint(equalTo: wordCountLabel.bottomAnchor, constant: 10),
+            keywordLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
+            keywordLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
+
+            promptLabel.topAnchor.constraint(equalTo: keywordLabel.bottomAnchor, constant: 10),
+            promptLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
+            promptLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
+
+            buttonStackView.topAnchor.constraint(equalTo: promptLabel.bottomAnchor, constant: 20),
+            buttonStackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
+            buttonStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
+            buttonStackView.heightAnchor.constraint(equalToConstant: 50),
+            buttonStackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -20)
         ])
+    }
+
+    private func setupButton(_ button: UIButton, title: String, action: Selector, imageName: String? = nil) {
+        button.setTitle(title, for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = UIColor.systemOrange
+        button.layer.cornerRadius = 10
+        button.addTarget(self, action: action, for: .touchUpInside)
+
+        if let imageName = imageName {
+            let image = UIImage(systemName: imageName)
+            button.setImage(image, for: .normal)
+            button.tintColor = .white
+            button.imageView?.contentMode = .scaleAspectFit
+            button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 0)
+        }
     }
 
     private func displayNovel() {
         titleLabel.text = novel?.title
         contentTextView.text = novel?.content
-        updateSegmentedControl()
-    }
-
-    @objc private func segmentedControlChanged() {
-        updateSegmentedControl()
-    }
-
-    private func updateSegmentedControl() {
-        let selectedIndex = segmentedControl.selectedSegmentIndex
-        wordCountLabel.isHidden = selectedIndex != 0
-        keywordLabel.isHidden = selectedIndex != 1
-        if selectedIndex == 0 {
-            wordCountLabel.text = "字数制限: \(novel?.wordCount ?? 0)"
-        } else {
-            keywordLabel.text = novel?.keyword
-        }
+        wordCountLabel.text = "字数制限: \(novel?.wordCount ?? 0)"
+        keywordLabel.text = "\(novel?.keyword ?? "")"
+        promptLabel.text = "お題: \(novel?.prompt ?? "")"
     }
 
     @objc private func shareNovel() {
         guard let title = novel?.title, let content = novel?.content else { return }
-        let shareText = "Title: \(title)\n\n\(content)"
+        let shareText = "タイトル: \(title)\n\n\(content)"
         let activityViewController = UIActivityViewController(activityItems: [shareText], applicationActivities: nil)
         present(activityViewController, animated: true, completion: nil)
     }
@@ -180,12 +216,19 @@ class DetailViewController: UIViewController {
     }
 }
 
+
+
+
+
+
+
 // UIColor extension to define a custom dark blue color
-extension UIColor {
-    static func darkBlueColor() -> UIColor {
-        return UIColor(red: 0/255, green: 0/255, blue: 139/255, alpha: 1.0) // Dark blue color
-    }
-}
+//extension UIColor {
+//    static func darkBlueColor() -> UIColor {
+//        return UIColor(red: 0/255, green: 0/255, blue: 139/255, alpha: 1.0) // Dark blue color
+//    }
+//}
+
 
 
 
